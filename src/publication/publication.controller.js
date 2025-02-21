@@ -5,13 +5,18 @@ export const addPublication = async (req, res) => {
     try {
         const data = req.body
         const category = await Category.findOne({ category: data.category })
-
+        if(!category){
+            return res.status(404).json({
+                success: false,
+                message: 'Category not found',
+            });
+        }
         const publication = new Publication({
             ...data,
             category: category._id,
             creator: req.usuario._id
         })
-        await Publication.save();
+        await publication.save();
         const userPost = await Publication.findById(publication._id).populate("creator", "username")
 
         res.status(200).json({

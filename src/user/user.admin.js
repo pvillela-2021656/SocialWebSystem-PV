@@ -1,3 +1,4 @@
+import { hash } from "argon2"
 import User from "./user.model.js";
 
 export const adminCreator = async () => {
@@ -13,7 +14,7 @@ export const adminCreator = async () => {
                 surname: "SURNAME_ADMIN",
                 username: "ADMIN",
                 email: "ADMIN@kinal.edu.gt",
-                password: "ADMIN#16",
+                password: await hash("ADMIN#16"),
                 profilePicture: "pvillela.jpg",
                 phone: "99996666",
                 role: "ADMIN_ROLE"
