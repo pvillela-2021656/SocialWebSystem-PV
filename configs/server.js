@@ -7,6 +7,7 @@ import morgan from "morgan"
 import authRoutes from "../src/auth/auth.routes.js"
 import categoryRoutes from "../src/category/category.routes.js"
 import apiLimiter from "../src/middlewares/rate-limit-validator.js"
+import publicationRoutes from "../src/publication/publication.routes.js"
 import userRoutes from "../src/user/user.routes.js"
 import { dbConnection } from "./mongo.js"
 
@@ -23,6 +24,7 @@ const routes = (app) => {
     app.use("/socialNetwork/v1/auth", authRoutes);
     app.use("/socialNetwork/v1/user", userRoutes);
     app.use("/socialNetwork/v1/category", categoryRoutes);
+    app.use("/socialNetwork/v1/publication", publicationRoutes);
 }
 
 const conectarDB = async () => {
