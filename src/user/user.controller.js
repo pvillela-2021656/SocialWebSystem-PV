@@ -40,3 +40,73 @@ export const updateProfilePicture = async (req, res) => {
         });
     }
 };
+
+export const updateUser = async (req, res) => {
+    try {
+        const { uid } = req.params;
+        const data = req.body;
+
+        const updatedUser = await User.findByIdAndUpdate(uid, data, { new: true });
+
+        res.status(200).json({
+            success: true,
+            message: 'User updated.',
+            user: updatedUser,
+        });
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            message: 'Error at updating the User.',
+            error: err.message
+        });
+    }
+};
+
+export const updatePassword = async (req, res) => {
+    try {
+        const { uid } = req.params;
+        const { oldPassword, newPassword } = req.body;
+
+        const findUser = await User.findById(uid);
+
+            if (!findUser) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Didn't find the user.",
+                    error: err.message
+                });
+            }
+
+        const invalidPassword = await verify(user.password, oldPassword);
+        if (!invalidPassword) {
+            return res.status(400).json({
+                success: false,
+                message: "Password invalid.",
+                error: err.message
+            });
+        }
+
+        const samePassword = await verify(user.password, newPassword);
+        if (samePassword) {
+            return res.status(400).json({
+                success: false,
+                message: "The new password can't be the same as the last one.",
+                error: err.message
+            });
+        }
+
+        const encryptedPassword = await hash(newPassword);
+        await User.findByIdAndUpdate(uid, { password: encryptedPassword }, { new: true });
+
+        return res.status(200).json({
+            success: true,
+            message: "Password was updated.",
+        });
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            message: "There was an error updating this password.",
+            error: err.message
+        });
+    }
+};
