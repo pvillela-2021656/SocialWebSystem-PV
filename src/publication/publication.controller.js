@@ -36,7 +36,14 @@ export const addPublication = async (req, res) => {
 export const deletePublication = async (req, res) => {
     try {
         const { id } = req.params;
-        const Publication = await Publication.findByIdAndDelete(id)
+        const post = await Publication.findByIdAndDelete(id)
+        //Encontrar la publicación.
+        if (!post) {
+            return res.status(404).json({
+                success: false,
+                message: "Publication not found.",
+            });
+        }
 
         res.status(200).json({
             success: true,
@@ -47,6 +54,32 @@ export const deletePublication = async (req, res) => {
             success: false,
             message: "Couldnt delete this publication.",
             error: err.message
+        })
+    }
+}
+
+export const updatePublication = async (req, res) =>{
+    try{
+        const { id } = req.params
+        const { ...data } = req.body
+
+        const post = await Publication.findByIdAndUpdate(id, data, {new: true})
+        if(!post) {
+            //Encontrar la publicación para actualizar.
+            return res.status(400).json({
+                success: false,
+                message: "Didnt find the publication.",
+                
+            })
+        }
+        res.status(200).json({
+            success: true,
+            message: "Publication was SUCCESSFULLY updated."
+        })
+    }catch(err){
+        res.status(500).json({
+            success: false,
+            message: "Couldnt update this publication."
         })
     }
 }

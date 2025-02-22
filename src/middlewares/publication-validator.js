@@ -15,6 +15,16 @@ export const addPublicationValidator =[
 
 export const deletePublicationValidator = [
     validateJWT,
-    hasRoles("USER_ROLE", "USER_ROLE"),
+    hasRoles("USER_ROLE", "ADMIN_ROLE"),
     param("id").isMongoId().withMessage("Not a valid Mongo ID"),
+    validarCampos,
+    handleErrors
+]
+
+export const updatePublicationValidator = [
+    validateJWT,
+    hasRoles("USER_ROLE", "ADMIN_ROLE"),
+    param("id").isMongoId().withMessage("Not a valid Mongo ID"),
+    validarCampos,
+    handleErrors
 ]
