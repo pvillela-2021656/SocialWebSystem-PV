@@ -6,6 +6,7 @@ import helmet from "helmet"
 import morgan from "morgan"
 import authRoutes from "../src/auth/auth.routes.js"
 import categoryRoutes from "../src/category/category.routes.js"
+import commentRoutes from "../src/comments/comment.routes.js"
 import apiLimiter from "../src/middlewares/rate-limit-validator.js"
 import publicationRoutes from "../src/publication/publication.routes.js"
 import userRoutes from "../src/user/user.routes.js"
@@ -25,6 +26,7 @@ const routes = (app) => {
     app.use("/socialNetwork/v1/user", userRoutes);
     app.use("/socialNetwork/v1/category", categoryRoutes);
     app.use("/socialNetwork/v1/publication", publicationRoutes);
+    app.use("/socialNetwork/v1/comments", commentRoutes)
 }
 
 const conectarDB = async () => {

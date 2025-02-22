@@ -18,7 +18,7 @@ export const addPublication = async (req, res) => {
         })
         await publication.save();
         const userPost = await Publication.findById(publication._id).populate("creator", "username")
-
+        //Exito:
         res.status(200).json({
             success: true,
             message: "The publication was created successfully:",
@@ -44,7 +44,7 @@ export const deletePublication = async (req, res) => {
                 message: "Publication not found.",
             });
         }
-
+        //Exito:
         res.status(200).json({
             success: true,
             message: "Post has been deleted successfully."
@@ -62,7 +62,7 @@ export const updatePublication = async (req, res) =>{
     try{
         const { id } = req.params
         const { ...data } = req.body
-
+        
         const post = await Publication.findByIdAndUpdate(id, data, {new: true})
         if(!post) {
             //Encontrar la publicación para actualizar.
@@ -72,6 +72,7 @@ export const updatePublication = async (req, res) =>{
                 
             })
         }
+        //Exito:
         res.status(200).json({
             success: true,
             message: "Publication was SUCCESSFULLY updated."

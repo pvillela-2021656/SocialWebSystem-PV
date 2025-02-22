@@ -6,7 +6,7 @@ export const addCategory = async (req, res)=>{
         const category = new Category({
             ...data,
         })
-
+        //Exito:
         await category.save();
         res.status(200).json({
             success: true,
@@ -17,31 +17,6 @@ export const addCategory = async (req, res)=>{
         res.status(500).json({
             success: false,
             message: "Couldnt add the category.",
-            error: err.message
-        })
-    }
-}
-
-export const listCategories = async (req, res) => {
-    try{
-        const{ limit=10, from=0} = req.query
-        const query = {}
-
-        const [total, categories] = await Promise.all([
-            Category.countDocuments(query),
-            Category.find(query)
-                .skip(Number(from))
-                .limit(Number(limit))
-        ])
-        return res.status(200).json({
-            success: true,
-            total,
-            categories
-        })
-    }catch(error){
-        return res.status(500).json({
-            success: false,
-            message: "Couldnt get the list of categories.",
             error: err.message
         })
     }
