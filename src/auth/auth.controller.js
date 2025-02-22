@@ -1,7 +1,50 @@
-import { hash, verify } from "argon2"
-import User from "../user/user.model.js"
+import { hash, verify } from "argon2";
 import { generateJWT } from "../helpers/generate-jwt.js";
+import User from "../user/user.model.js";
 
+/**
+ * @swagger
+ * /register:
+ *   post:
+ *     summary: Register a new user
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: User's first name
+ *               surname:
+ *                 type: string
+ *                 description: User's surname
+ *               username:
+ *                 type: string
+ *                 description: User's username
+ *               email:
+ *                 type: string
+ *                 description: User's email
+ *               password:
+ *                 type: string
+ *                 description: User's password
+ *               profilePicture:
+ *                 type: string
+ *                 format: binary
+ *                 description: User's profile picture
+ *               phone:
+ *                 type: string
+ *                 description: User's phone number
+ *     responses:
+ *       201:
+ *         description: User has been created
+ *       400:
+ *         description: Bad request
+ *       500:
+ *         description: User registration failed
+ */
 export const register = async (req, res) => {
     try {
         const data = req.body;
@@ -25,6 +68,36 @@ export const register = async (req, res) => {
     }
 }
 
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     summary: Login a user
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: User's email
+ *               username:
+ *                 type: string
+ *                 description: User's username
+ *               password:
+ *                 type: string
+ *                 description: User's password
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *       400:
+ *         description: Invalid credentials
+ *       500:
+ *         description: Login failed, server error
+ */
 export const login = async (req, res) => {
     const { email, username, password } = req.body
     try{
@@ -63,4 +136,4 @@ export const login = async (req, res) => {
             error: err.message
         })
     }
-} 
+}

@@ -11,6 +11,7 @@ import apiLimiter from "../src/middlewares/rate-limit-validator.js"
 import publicationRoutes from "../src/publication/publication.routes.js"
 import userRoutes from "../src/user/user.routes.js"
 import { dbConnection } from "./mongo.js"
+import { swaggerDocs, swaggerUi } from "./swagger.js"
 
 const middlewares = (app) => {
     app.use(express.urlencoded({ extended: false }))
@@ -27,6 +28,7 @@ const routes = (app) => {
     app.use("/socialNetwork/v1/category", categoryRoutes);
     app.use("/socialNetwork/v1/publication", publicationRoutes);
     app.use("/socialNetwork/v1/comments", commentRoutes)
+    app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 }
 
 const conectarDB = async () => {
